@@ -163,6 +163,7 @@ def deleteWeekdayGroup(request, day, group):
     # print(day, group)
     user = request.user.id
     if request.method == 'PUT':
+        if day == 'mondayGroups':
             userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
             print(userWorkoutSchedule.mondayGroups)
             arr = userWorkoutSchedule.mondayGroups

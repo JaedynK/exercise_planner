@@ -1,0 +1,109 @@
+.nav2 a{
+    color: rgb(17, 64, 105);
+    text-decoration:none;
+}
+
+/* .nav_header{
+    font-size: larger;
+    color: rgb(17, 64, 105);
+    background-color: black;
+} */
+
+.app_content{
+    background-color: #242424;
+}
+.sign_out_btn{
+    margin: .5rem;
+}
+
+body{
+    margin: 0px;
+    height:100vh;
+}
+
+.App{
+    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    height:100vh;
+
+}
+
+.home_header{
+    color: rgb(17, 64, 105);
+    font-family: Roboto;
+    display: flex;
+    align-items: top;
+    justify-content:center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-top: .75rem;
+}
+
+
+.home_quote{
+    /* background: rgb(222,202,46);
+    background: radial-gradient(circle, rgba(222,202,46,1) 18%, rgba(133,122,10,1) 72%); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem;
+    padding: 1rem;
+    background-color: rgba(71, 78, 80, 0.16);
+    color: rgb(21, 76, 123);
+    font-family: Roboto
+} 
+
+.form_page{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    padding: 3rem;
+   
+    /* background-color: #878484; */
+}
+
+.form_container{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    padding: 2rem;
+    border-radius: 15px 50px 30px;
+    background-color: rgba(71, 78, 80, 0.26);
+}
+
+.addExercise_container{
+    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: rgb(70, 70, 70);
+    padding: 1rem;
+}
+
+.signInput{
+    margin: .10rem;
+}
+
+.select_workouts{
+   color: black;
+}
+
+
+.workout_list{
+    padding: .10rem;
+    display: flex;
+    flex-flow: column wrap;
+    margin: 1rem;
+}
+
+.add_btn{
+    margin: .30rem;
+}
+
+.workouts_page{
+    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: rgb(70, 70, 70);
+    padding: 1rem;
+}

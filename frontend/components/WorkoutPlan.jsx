@@ -23,13 +23,14 @@ export default function WorkoutPlan(){
 
   function getExercisebyGroup(group){
     console.log(group)
-    axios.get('exercises/'+group+'/').then(response=>{
+    axios.get('muscileGroup/'+group+'/').then(response=>{
       let data = response.data
       console.log(data[0])
       setExercises(data)
     })
   }
 
+  
   const [monday, setMonday] = useState([])
   const [tuesday, setTuesday] = useState([])
   const [wednesday, setWednesday] = useState([])
@@ -53,6 +54,16 @@ export default function WorkoutPlan(){
       setSunday(data[0].sundayGroups)
       }
     })
+  }
+
+  function deleteGroup(day, group){
+    console.log(day, group)
+    axios.put('weekday/'+day+'/muscile/'+group+'/').then(response=>{
+      let data = response.data
+      console.log(data)
+    }).then(
+      getDayOfExercise()
+    )
   }
 
   const [selectMuscile, setSelectMuscile]= useState('')
@@ -126,17 +137,18 @@ export default function WorkoutPlan(){
         </Modal.Header>
         <Modal.Body>
     <button onClick={()=>postDayOfExercise()}>New Exercise for Monday</button>
-     { monday && monday.map(day => {
+     { monday && monday.map(group => {
           return <div>
             <input type='text'
-          placeholder={day}
+          placeholder={group}
           />
+           <button onClick={() => deleteGroup('mondayGroups', group)}>delete</button>
           </div>
           })}
 
         {/* {exercises && exercises.map(ex => {  WORK ON THIS
           return <div>{ex}</div>
-        }
+        }s
         )} */}
           </Modal.Body>
         <Modal.Footer>
@@ -150,38 +162,6 @@ export default function WorkoutPlan(){
       </Modal>
 
 {/* Modal Clickers */}
-
-      { monday && monday.map(day => {
-          return <div>
-            <input type='text'
-          placeholder={day}
-          />
-          </div>
-          })}
-           <h2>Tuesday</h2>
-     { tuesday && tuesday.map(day => {
-          return <p>{day}</p>
-          })}
-           <h2>Wednesday</h2>
-     { wednesday && wednesday.map(day => {
-          return <p>{day}</p>
-          })}
-           <h2>Thursday</h2>
-     { thursday && thursday.map(day => {
-          return <p>{day}</p>
-          })}
-           <h2>Firday</h2>
-     { friday && friday.map(day => {
-          return <p>{day}</p>
-          })}
-           <h2>Saturday</h2>
-     { saturday && saturday.map(day => {
-          return <p>{day}</p>
-          })}
-           <h2>Sunday</h2>
-      { sunday && sunday.map(day => {
-          return<p>{day}</p>
-          })}
 
       <button onClick={()=>getExercisebyGroup("chest")}>all</button>
       <button onClick={()=>getDayOfExercise()}>days</button>

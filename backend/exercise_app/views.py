@@ -121,7 +121,8 @@ def getMuscileGroupExercise(request, muscileGroup):
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
-        pass
+        found = Exercise.objects.get(id = muscileGroup)
+        found.delete()
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getExercise(request, exerciseId):
@@ -131,7 +132,7 @@ def getExercise(request, exerciseId):
     return Response({'success': True, 'id': exerciseId})
 
 
-@api_view(['GET', 'PUT','POST', 'DELETE'])
+@api_view(['GET', 'PUT','POST'])
 def weekdaygroup(request):
     if request.user.is_authenticated:
             # print(request)
@@ -156,3 +157,20 @@ def weekdaygroup(request):
         pass
     elif request.method == 'DELETE':
         pass
+
+@api_view(['GET','PUT', 'DELETE', 'POST'])
+def deleteWeekdayGroup(request, day, group):
+    # print(day, group)
+    user = request.user.id
+    if request.method == 'PUT':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            print(userWorkoutSchedule.mondayGroups)
+            arr = userWorkoutSchedule.mondayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.mondayGroups = arr
+            userWorkoutSchedule.save()
+            print(userWorkoutSchedule.mondayGroups)
+            return JsonResponse({'success': True})
+    else:
+        return Response({'worked':False})

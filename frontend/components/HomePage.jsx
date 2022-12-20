@@ -116,12 +116,9 @@ export default function HomePage(){
         <div className="home_quote square rounded border border-5">
 
         <h4>{quote}</h4>
-         </div>
+         {/* </div>
          { monday && monday.map(day => {
-          return <div>
-            <input type='text'
-          placeholder={day}
-          />
+          return <div>{day}
           </div>
           })}
            <h2>Tuesday</h2>
@@ -147,7 +144,8 @@ export default function HomePage(){
            <h2>Sunday</h2>
       { sunday && sunday.map(day => {
           return<p>{day}</p>
-          })}
+          })} */}
+    </div>
     </div>
     )
 }

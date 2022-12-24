@@ -9,8 +9,12 @@ import MyNavbar from '../components/Navbar';
 
 function App() {
   
-  const [show, setShow] = useState(false);
   const [user, setUser]= useState(null)
+  const [saveReps, setSaveReps]= useState('')
+  const [saveWeight, setSaveWeight]= useState('')
+  const [saveSets, setSaveSets]= useState('')
+  const [exerciseName, setExerciseName]= useState('')
+  const [muscileGroup, setMuscileGroup]= useState('')
 
 //--------------Cookie set-up---------------------------//
   function getCookie(name) {
@@ -41,76 +45,29 @@ function App() {
   }
 
   
-  // function deleteUser(id){
-  //   axios.delete(`current_user/${id}/` )
-  //   .then( response => {
-  //     console.log(response.data)
-  //   }).then(
-  //     console.log('worked')
-  //   )
-  // }
- 
-  // function getAllExercise(){
-  //   axios.get('exercise/').then(response=>{
-  //     let data = response.data
-  //     console.log(data)
-  //   })
-  // }
 
-  // // function getExercisebyGroup(group){
-  // //   axios.get('exercises/'+group+'/').then(response=>{
-  // //     let data = response.data
-  // //     console.log(data)
-  // //   })
-  // // }
+  function saveWorkout(){
+    event.preventDefault()
+    let exercise_title1 = exerciseName
+    let muscile_group1 = muscileGroup
+    let user_exercise1 = user.id
+    let weight = saveWeight
+    let reps = saveReps 
+    let sets=  saveSets
+    console.log(muscile_group1, weight, reps, sets)
+   axios.post('saveWorkout/',{
+        'exercise': exercise_title1,
+        'muscile_group': muscile_group1,
+        'user_exercise': user_exercise1,
+        'weight': weight,
+        'reps': reps,
+        'sets': sets,
+    }).then(response=>{
+      let data = response.data
+      console.log(data)
+    })
+  }
 
-  // const [monday, setMonday] = useState([])
-  // const [tuesday, setTuesday] = useState([])
-  // const [wednesday, setWednesday] = useState([])
-  // const [thursday, setThursday] = useState([])
-  // const [friday, setFriday] = useState([])
-  // const [saturday, setSaturday] = useState([])
-  // const [sunday, setSunday] = useState([])
-  // function getDayOfExercise(){
-  //   axios.get('weekday/').then(response=>{
-  //     let data = response.data
-  //     console.log(data[0])
-  //     setMonday(data[0].mondayGroups)
-  //     setTuesday(data[0].tuesdayGroups)
-  //     setWednesday(data[0].wednesdayGroups)
-  //     setThursday(data[0].thursdayGroups)
-  //     setFriday(data[0].fridayGroups)
-  //     setSaturday(data[0].saturdayGroups)
-  //     setSunday(data[0].sundayGroups)
-  //   })
-  // }
-
-  // const [selectMuscile, setSelectMuscile]= useState('')
-  // const musciles = [
-  //   {label: 'N/A', value:'' },
-  //   {label: 'abdominals', value:'abdominals' },
-  //   {label: 'abductors', value:'abductors' },
-  //   {label:'adductors', value: 'adductors' },
-  //   {label:'biceps', value: 'biceps'},
-  //   {label:'calves', value: 'calves'},
-  //   {label:'chest', value: 'chest'},
-  //   {label:'forearms', value: 'forearms'},
-  //   {label:'glutes', value: 'glutes'},
-  //   {label:'hamstrings', value: 'hamstrings'},
-  //   {label:'lats', value: 'lats'},
-  //   {label:'lowerback middleback', value: 'lowerback middleback'},
-  //   {label:'neck', value: 'neck'},
-  //   {label:'quadriceps', value: 'quadriceps'},
-  //   {label:'traps', value:'traps'},
-  //   {label:'triceps', value: 'triceps'}
-  // ]
-
-  // function postDayOfExercise(){
-  //   axios.post('weekday/').then(response=>{
-  //     let data = response.data
-  //     console.log(data)
-  //   })
-  // }
 
   useEffect(()=>{
       curr_user()
@@ -121,9 +78,10 @@ function App() {
   return (
    
     <div className="App"  >
+
  
   <MyNavbar user={user && user.username}/>
-
+           
 
     </div>
   )

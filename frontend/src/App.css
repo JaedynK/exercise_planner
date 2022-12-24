@@ -1,5 +1,5 @@
 .nav2 a{
-    color: rgb(17, 64, 105);
+    color: rgb(55, 128, 191);
     text-decoration:none;
 }
 
@@ -73,10 +73,9 @@ body{
 }
 
 .addExercise_container{
-    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background: none;
     background-repeat: no-repeat;
     background-size:cover;
-    background-color: rgb(70, 70, 70);
     padding: 1rem;
 }
 
@@ -101,9 +100,15 @@ body{
 }
 
 .workouts_page{
-    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background: none;
     background-repeat: no-repeat;
     background-size:cover;
-    background-color: rgb(70, 70, 70);
+    padding: 1rem;
+}
+
+.workoutHistory{
+    background: none;
+    background-repeat: no-repeat;
+    background-size:cover;
     padding: 1rem;
 }

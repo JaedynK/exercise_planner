@@ -9,13 +9,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect} from 'react';
 import AddExercises from './AddExercises';
 
+
+
 export default function WorkoutPlan(){
 
     const [workoutGroup, setWorkoutGroup] = useState([])  
     const [exercises, setExercises] = useState([]) 
     const [selectMuscile, setSelectMuscile]= useState('')
     const [theDelete, setTheDelete]= useState('')
-    const [theDeleteEx, setTheDeleteEx]= useState([])
+    const [theDeleteEx, setTheDeleteEx]= useState(0)
 
 
     const musciles = [
@@ -69,7 +71,6 @@ export default function WorkoutPlan(){
 
   
   const [monday, setMonday] = useState([])
-  const [testmonday, setTestMonday] = useState([])
   const [tuesday, setTuesday] = useState([])
   const [wednesday, setWednesday] = useState([])
   const [thursday, setThursday] = useState([])
@@ -142,81 +143,106 @@ export default function WorkoutPlan(){
     
       useEffect(()=>{
         getDayOfExercise()
-        getAllExercise()
+
       },[])
 
       useEffect(()=>{
-        setExercises(exercises)
-      },[exercises])
+        getAllExercise()
+      },[theDeleteEx])
 
 
     return(
        <div className='workouts_page'>
 {/* modal clickers */}
-      <Button variant="primary" onClick={(event)=>{handleShow(event); getExercisebyGroup(monday); }}>
+<Container>
+  <Col>
+
+    <Row>
+      <Button variant="outline-primary" onClick={(event)=>{handleShow(event); getExercisebyGroup(monday); }}>
         Monday Exercises
       </Button>
-
-      <Button variant="primary" onClick={(event)=>{handleShow1(event); getExercisebyGroup(tuesday); }}>
+    </Row>
+<hr></hr>
+    <Row>
+      <Button variant="outline-primary" onClick={(event)=>{handleShow1(event); getExercisebyGroup(tuesday); }}>
         Tuesday Exercises
       </Button>
-
-      <Button variant="primary" onClick={(event)=>{handleShow2(event); getExercisebyGroup(wednesday);}}>
+      </Row>
+<hr></hr>
+      <Row>
+      <Button variant="outline-primary" onClick={(event)=>{handleShow2(event); getExercisebyGroup(wednesday);}}>
         Wednesday Exercises
       </Button>
-
-        <Button variant="primary" onClick={(event)=>{handleShow3(event); getExercisebyGroup(thursday);}}>
+      </Row>
+<hr></hr>
+      <Row>
+        <Button variant="outline-primary" onClick={(event)=>{handleShow3(event); getExercisebyGroup(thursday);}}>
         Thursday Exercises
       </Button>
-
-            <Button variant="primary" onClick={(event)=>{handleShow4(event); getExercisebyGroup(friday);}}>
+      </Row>
+<hr></hr>
+      <Row>
+        <Button variant="outline-primary" onClick={(event)=>{handleShow4(event); getExercisebyGroup(friday);}}>
         Firday Exercises
       </Button>
-
-      <Button variant="primary" onClick={(event)=>{handleShow5(event); getExercisebyGroup(saturday);}}>
+      </Row>
+<hr></hr>
+      <Row>
+      <Button variant="outline-primary" onClick={(event)=>{handleShow5(event); getExercisebyGroup(saturday);}}>
         Saturday Exercises
       </Button>
-
-      <Button variant="primary" onClick={(event)=>{handleShow6(event); getExercisebyGroup(sunday);}}>
+      </Row>
+<hr></hr>
+      <Row>
+      <Button variant="outline-primary" onClick={(event)=>{handleShow6(event); getExercisebyGroup(sunday);}}>
         Sunday Exercises
       </Button>
-
+      </Row>
+  </Col>
+</Container>
 {/* ----------------------Monday Modal---------------------------- */}
 <Modal show={show} onHide={handleClose}>
   <Modal.Header closeButton>
     <Modal.Title>Monday</Modal.Title>
   </Modal.Header>
       <Modal.Body>
-        { monday.length === 0 ?<h3> Rest Day </h3> : monday && monday.map((group, i) => {
-        return <div>
-        <ul>
-          <li>
-           {theDelete === group ? 
-           <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
-           : <div className='groupNameDiv'>
-            <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-            <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
-            </div>}
+    { monday.length === 0 ?<h3> Rest Day </h3> : monday && monday.map((group, i) => {
+    return <div>
+    <ul>
+      <li>
+        {theDelete === group ? 
+        <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
+        : <div className='groupNameDiv'>
+        <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
+        <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
+        </div>}
 
-            {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-              <text>{index.exercise_title}</text> : <></>}
-              </div>
-            })}
-
-          </li>
-        </ul>
-        </div>
+        {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
+          <div>
+            <text>{index.exercise_title} 
+          <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+            {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+          <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+          <hr></hr>
+          </div>
+          : <></>}
+          </div>
         })}
-        <div className="col-sm-6"> 
-              <Select placeholder='Add Muscile Group'id='muscileGroup' options={musciles} onChange={(e)=> setSelectMuscile(e.value)} />
-        </div>
-      </Modal.Body>
-    <Modal.Footer>
-      <Button variant="secondary" onClick={handleClose}>
+      </li>
+    </ul>
+    </div>
+    })}
+    <div className="col-sm-6"> 
+          <Select placeholder='Add Muscile Group'id='muscileGroup' options={musciles} onChange={(e)=> setSelectMuscile(e.value)} />
+    </div>
+  </Modal.Body>
+<Modal.Footer>
+
+      <Button variant="outline-secondary" onClick={handleClose}>
         Close
       </Button>
 
-    <Button variant="primary" 
+    <Button variant="outline-success" 
     onClick={()=>{postDayOfExercise('mondayGroups', selectMuscile); 
     deleteGroup('mondayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
       Save Changes
@@ -238,11 +264,18 @@ export default function WorkoutPlan(){
                      <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                      : <div className='groupNameDiv'>
                       <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                      <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                      <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                       </div>}
           
                     {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                     <div>
+                     <text>{index.exercise_title} 
+                   <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                   <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+                   <hr></hr>
+                   </div>
+                      : <></>}
                       </div>
                     })}
           
@@ -255,11 +288,11 @@ export default function WorkoutPlan(){
                   </div>
                 </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose}>
                   Close
                 </Button>
           
-              <Button variant="primary" 
+              <Button variant="outline-success" 
               onClick={()=>{postDayOfExercise('tuesdayGroups', selectMuscile); 
               deleteGroup('tuesdayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
                 Save Changes
@@ -282,11 +315,18 @@ export default function WorkoutPlan(){
                      <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                      : <div className='groupNameDiv'>
                       <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                      <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                      <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                       </div>}
           
                     {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                     <div>
+                     <text>{index.exercise_title} 
+                   <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                   <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+                   <hr></hr>
+                   </div>
+                    : <></>}
                       </div>
                     })}
           
@@ -299,11 +339,11 @@ export default function WorkoutPlan(){
                   </div>
                 </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose}>
                   Close
                 </Button>
           
-              <Button variant="primary" 
+              <Button variant="outline-success"
               onClick={()=>{postDayOfExercise('wednesdayGroups', selectMuscile); 
               deleteGroup('wednesdayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
                 Save Changes
@@ -327,11 +367,18 @@ export default function WorkoutPlan(){
                    <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                    : <div className='groupNameDiv'>
                     <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                    <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                    <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                     </div>}
         
                     {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                    <div>
+                    <text>{index.exercise_title} 
+                  <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+                   {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                  <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+                  <hr></hr>
+                  </div>
+                    : <></>}
                       </div>
                     })}
         
@@ -344,11 +391,11 @@ export default function WorkoutPlan(){
                 </div>
               </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="outline-secondary" onClick={handleClose}>
                 Close
               </Button>
         
-            <Button variant="primary" 
+            <Button variant="outline-success" 
             onClick={()=>{postDayOfExercise('thursdayGroups', selectMuscile); 
             deleteGroup('thursdayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
               Save Changes
@@ -372,11 +419,18 @@ export default function WorkoutPlan(){
                     <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                     : <div className='groupNameDiv'>
                      <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                     <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                     <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                      </div>}
          
                      {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                    <div>
+                    <text>{index.exercise_title} 
+                    <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+                     {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                    <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+                    <hr></hr>
+                    </div>
+                    : <></>}
                       </div>
                     })}
          
@@ -389,11 +443,11 @@ export default function WorkoutPlan(){
                  </div>
                </Modal.Body>
              <Modal.Footer>
-               <Button variant="secondary" onClick={handleClose}>
+               <Button variant="outline-secondary" onClick={handleClose}>
                  Close
                </Button>
          
-             <Button variant="primary" 
+             <Button variant="outline-success"
              onClick={()=>{postDayOfExercise('fridayGroups', selectMuscile); 
              deleteGroup('fridayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
                Save Changes
@@ -417,14 +471,20 @@ export default function WorkoutPlan(){
                    <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                    : <div className='groupNameDiv'>
                     <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                    <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                    <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                     </div>}
         
                     {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                    <div>
+                    <text>{index.exercise_title} 
+                    <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
+                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                    <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
+                    <hr></hr>
+                    </div>
+                    : <></>}
                       </div>
                     })}
-        
                   </li>
                 </ul>
                 </div>
@@ -434,11 +494,11 @@ export default function WorkoutPlan(){
                 </div>
               </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="outline-secondary" onClick={handleClose}>
                 Close
               </Button>
         
-            <Button variant="primary" 
+            <Button variant="outline-success" 
             onClick={()=>{postDayOfExercise('saturdayGroups', selectMuscile); 
             deleteGroup('saturdayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
               Save Changes
@@ -461,11 +521,14 @@ export default function WorkoutPlan(){
                     <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
                     : <div className='groupNameDiv'>
                      <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                     <button style={{margin:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</button>
+                     <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
                      </div>}
          
                      {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                     <text>{index.exercise_title}</text> : <></>}
+                     <div><text>{index.exercise_title}</text>
+                     <button onClick={()=> 
+                     {deleteExercise(index.id); setTheDeleteEx(index.id)}}>delete</button></div> 
+                     : <></>}
                       </div>
                     })}
          
@@ -478,13 +541,13 @@ export default function WorkoutPlan(){
                  </div>
                </Modal.Body>
              <Modal.Footer>
-               <Button variant="secondary" onClick={handleClose}>
+               <Button variant="outline-secondary" onClick={handleClose}>
                  Close
                </Button>
          
-             <Button variant="primary" 
+             <Button variant="outline-success" 
              onClick={()=>{postDayOfExercise('sundayGroups', selectMuscile); 
-             deleteGroup('sundayGroups', theDelete);  deleteExercise(theDeleteEx)}}>
+             deleteGroup('sundayGroups', theDelete)}}>
                Save Changes
              </Button>
         </Modal.Footer>

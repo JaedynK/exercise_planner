@@ -79,7 +79,6 @@ def signOut(request):
 
 @api_view(["POST", 'GET'])
 def exercise(request):
-
     try:
         if request.method == 'POST':
             print(request.data)
@@ -88,9 +87,9 @@ def exercise(request):
             equipment = request.data['equipment']
             workout_type = request.data['workout_type']
             user_exercise =  AppUser.objects.get(id=request.data['user_exercise'])
-            weight= request.data['weight']
+            weight = request.data['weight']
             reps = request.data['reps']
-            sets = request.data['sets']
+            sets = request.data['sets'] 
 
             newExercise = Exercise(exercise_title=exercise_title, muscile_group=muscile_group,
             equipment=equipment,workout_type=workout_type, user_exercise=user_exercise, weight=weight, reps=reps,sets=sets)
@@ -107,6 +106,35 @@ def exercise(request):
     except Exception as e:
         print(e)
         return JsonResponse({'exercise':False})
+
+
+@api_view(["POST", 'GET'])
+def saveWorkout(request):
+    try:
+        if request.method == 'POST':
+            print(request.data)
+            exercise= request.data['exercise']
+            muscile_group =request.data['muscile_group']
+            user_passWorkouts =  AppUser.objects.get(id=request.data['user_exercise'])
+            weight = request.data['weight']
+            reps = request.data['reps']
+            sets = request.data['sets'] 
+            saveExercise = PassWorkouts(exercise=exercise, muscile_group=muscile_group,
+            user_passWorkouts=user_passWorkouts, weight=weight, reps=reps,sets=sets)
+            saveExercise.save()
+            return JsonResponse({'new exercise': True})
+        
+        elif request.method == 'GET':
+            exercise = PassWorkouts.objects.all()
+            exerciseData=PassWorkoutsSerializer(exercise, many=True )
+            # print(exerciseData.data)
+            # print(exercise)
+            return Response(exerciseData.data)
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({'exercise':False})
+
 
 
 @api_view(['GET'])

@@ -14,6 +14,7 @@ urlpatterns = [
     path('muscileGroup/<str:muscileGroup>/', views.getMuscileGroupExercise),
     path('weekday/<str:day>/muscile/<str:group>/', views.deleteWeekdayGroup),
     path('weekday/', views.weekdaygroup),
+    path('saveWorkout/', views.saveWorkout),
     re_path(r'.*', views.index, name='index'),
     # re_path(r'/s*/?', views.index, name='index'),
 

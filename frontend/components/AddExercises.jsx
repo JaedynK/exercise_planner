@@ -17,9 +17,11 @@ export default function AddExercises(){
     const [show, setShow] = useState(false);
     const [user, setUser]= useState(null)
     const [exercises, setExercises] = useState([]) 
-    const [reps, setReps]= useState('')
-    const [weight, setWeight]= useState('')
-    const [sets, setSets]= useState('')
+    const [saveReps, setSaveReps]= useState('')
+    const [saveWeight, setSaveWeight]= useState('')
+    const [saveSets, setSaveSets]= useState('')
+
+    const [updateIt, setUpdate]= useState(null)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -41,9 +43,7 @@ export default function AddExercises(){
       axios.delete('exercise/'+id+'/').then(response=>{
         let data = response.data
         console.log(data)
-      }).then(
-        window.location.reload()
-      )
+      })
     }
 
     const musciles = [
@@ -91,7 +91,6 @@ export default function AddExercises(){
           if(response.data.length===0){
             alert("No Workouts for This Workout type and Muscile Group")
           }
-
           setWorkOut(exerciseApiData)
         }).catch(function (error) {
           console.error(error);
@@ -131,17 +130,16 @@ export default function AddExercises(){
     }
 
     const addExercise=async(exercise)=>{
-      
       event.preventDefault()
       let exercise_title1 = exercise.name
       let muscile_group1 = exercise.muscle
       let equipment1 = exercise.equipment
       let workout_type1 = exercise.type
       let user_exercise1 = user.id
-      let weight = document.getElementById("weightInput").value
-      let reps = document.getElementById("repsInput").value
-      let sets= document.getElementById("setsInput").value
-      console.log(muscile_group1, workout_type1, user_exercise1)
+      let weight = saveWeight || document.getElementById("weightInput").value
+      let reps = saveReps || document.getElementById("repsInput").value
+      let sets=  saveSets || document.getElementById("setsInput").value
+      console.log(muscile_group1, workout_type1, weight, reps, sets)
       let myResponse=await axios.post('exercise/',{
           'exercise_title': exercise_title1,
           'muscile_group': muscile_group1,
@@ -172,19 +170,39 @@ export default function AddExercises(){
 
     useEffect(()=>{
         curr_user()
-    }, [exercises])
-
-    useEffect(()=>{
-      muscleGroups()
+        getAllExercise()
+        muscleGroups()
     }, [])
 
     useEffect(()=>{
-    getAllExercise()
-  }, [])
+      muscleGroups()
+      getAllExercise()
+    }, [selectMuscile, selectType])
+
+    useEffect(()=>{
+      getAllExercise()
+    }, [updateIt])
+
 
 
 return(
 <div className="addExercise_container">
+<div className='select_workouts'>
+      <div className="row">
+          <div className="col-md-3"></div>
+          <div className="col-md-6"> 
+             <Select placeholder='Select Muscile Group' id='muscileGroup' options={musciles} 
+             onChange={(e)=> setSelectMuscile(e.value)} 
+             />
+             <br></br>
+             <Select placeholder='Select Workout type'  id='workoutType' options={workoutType} 
+             onChange={(e)=> setSelectType(e.value)} 
+             />
+          </div>
+          {/* <div className="col-md-4"></div> */}
+      </div>
+  </div>
+  <hr></hr>
   <Container>
     <Row>
       <Col>
@@ -199,12 +217,12 @@ return(
               <h8>{index.muscile_group}</h8></div>
             
             <br></br>
-            <input placeholder={index.weight || 'weight'} type="text" onChange={(event)=> setWeight(event.target.value)} />
-            <input placeholder={index.reps ||'reps'} type="text" onChange={(event)=> setReps(event.target.value)} />
-            <input placeholder={index.sets ||'sets'} type="text" onChange={(event)=> setSets(event.target.value)} />
-            <button onClick={()=>{updateExercise(index.id)}}>save</button>
+            <input placeholder={index.weight || 'weight'} type="number" onChange={(event)=> setSaveWeight(event.target.value)} />
+            <input placeholder={index.reps ||'reps'} type="number" onChange={(event)=> setSaveReps(event.target.value)} />
+            <input placeholder={index.sets ||'sets'} type="number" onChange={(event)=> setSaveSets(event.target.value)} />
+            <button onClick={()=>{updateExercise(index.id); setUpdate(index.exercise_title)}}>save</button>
             </text>
-            <button onClick={()=>{deleteExercise(index.id)}}>delete</button>
+            <button onClick={()=>{deleteExercise(index.id); setUpdate(index.muscile_group) }}>delete</button>
             </ListGroup.Item>
           </ListGroup>:<></>}
           </div>
@@ -213,50 +231,35 @@ return(
       <Col>
       <h2>Add New Exercise</h2>
       <hr></hr>
-  <div className='select_workouts'>
-      <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-6"> 
-             <Select placeholder='Select Muscile Group' id='muscileGroup' options={musciles} 
-             onChange={(e)=> setSelectMuscile(e.value)} 
-             />
-             <br></br>
-             <Select placeholder='Select Workout type'  id='workoutType' options={workoutType} 
-             onChange={(e)=> setSelectType(e.value)} 
-             />
-             <button onClick={() => {muscleGroups()}}>
-            Update List
-            </button>
-          </div>
-          {/* <div className="col-md-4"></div> */}
-      </div>
-  </div>
+      
+      <Button variant="primary" onClick={handleShow}>
+       Add Exercise Manually 
+      </Button>
+
       <div className="workout_list">
         {workout && workout.map(exercise=> 
-          {return <ListGroup as="ol">
+          {return <div> {exercise.muscle === selectMuscile ?
+          <ListGroup as="ol">
           <ListGroup.Item 
           className="d-flex justify-content-between align-items-start"
           >
             <div>
               {exercise.name}
               <br></br>
-              <input placeholder={'weight'} type="text" id='weightInput' />
-              <input placeholder={'reps'} type="text" id='repsInput' />
-              <input placeholder={'sets'} type="text" id='setsInput'/>
+              <input placeholder={'weight'} type="number" id='weightInput' onChange={(event)=> setSaveWeight(event.target.value)} />
+              <input placeholder={'reps'} type="number" id='repsInput' onChange={(event)=> setSaveReps(event.target.value)} />
+              <input placeholder={'sets'} type="number" id='setsInput' onChange={(event)=> setSaveSets(event.target.value)}/>
             </div>
-          <button className="add_btn" onClick={() => addExercise(exercise)}>Save Exercise</button>
+          <button className="add_btn" onClick={() => {addExercise(exercise);  setUpdate(exercise.name)}}>Save</button>
           </ListGroup.Item>
           </ListGroup>
+          :<></>}</div>
         })}
         </div>
 
         <br></br>
 
       <div className='Manual_Sign_Up'>
-    
-      <Button variant="primary" onClick={handleShow}>
-       Add Exercise Manually 
-      </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -36,6 +36,7 @@ class Exercise(models.Model):
     user_exercise = models.ForeignKey(AppUser, on_delete = models.CASCADE, related_name = 'MusicleGroup')
     reps = models.IntegerField(default=0)
     weight = models.IntegerField(default=0)
+    sets = models.IntegerField(default=0)
 
 
 class PassWorkouts(models.Model):
@@ -45,6 +46,7 @@ class PassWorkouts(models.Model):
     weight = models.CharField(max_length=50)
     workout_date = models.DateTimeField(default=timezone.now)
     user_passWorkouts = models.ForeignKey(AppUser, on_delete = models.SET(get_deleted_user_instance), related_name = 'exercise')
+    sets = models.IntegerField(default=0)
 
 class DaysOfTheWeek(models.Model):
     mondayGroups = ArrayField(models.CharField(max_length=255), blank= True)

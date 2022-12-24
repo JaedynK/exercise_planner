@@ -50,7 +50,7 @@ export default function MyNavbar({user}) {
            {<Link classNam='link2'to='/WorkoutPlan'>Workouts</Link>}
         </Nav.Link>
         <Nav.Link>
-           {<Link classNam='link2'to='/addExercise'>Add Exercise</Link>}
+           {<Link classNam='link2'to='/addExercise'>Exercises</Link>}
         </Nav.Link>
         </Nav>
         </Navbar.Collapse>

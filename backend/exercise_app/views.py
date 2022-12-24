@@ -79,18 +79,21 @@ def signOut(request):
 
 @api_view(["POST", 'GET'])
 def exercise(request):
-    # print(request)
+
     try:
         if request.method == 'POST':
-            
+            print(request.data)
             exercise_title= request.data['exercise_title']
             muscile_group =request.data['muscile_group']
             equipment = request.data['equipment']
             workout_type = request.data['workout_type']
-            user_exercise =  AppUser.objects.get(username=request.data['user_exercise'])
-           
+            user_exercise =  AppUser.objects.get(id=request.data['user_exercise'])
+            weight= request.data['weight']
+            reps = request.data['reps']
+            sets = request.data['sets']
+
             newExercise = Exercise(exercise_title=exercise_title, muscile_group=muscile_group,
-            equipment=equipment,workout_type=workout_type, user_exercise=user_exercise)
+            equipment=equipment,workout_type=workout_type, user_exercise=user_exercise, weight=weight, reps=reps,sets=sets)
             newExercise.save()
             return JsonResponse({'new exercise': True})
         
@@ -106,7 +109,7 @@ def exercise(request):
         return JsonResponse({'exercise':False})
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 def getMuscileGroupExercise(request, muscileGroup):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -129,49 +132,170 @@ def getExercise(request, exerciseId):
     if request.method == 'DELETE':
         found = Exercise.objects.get(id = exerciseId)
         found.delete()
-    return Response({'success': True, 'id': exerciseId})
+        return Response({'success': True, 'id': exerciseId})
+    if request.method == 'PUT':
+        found = Exercise.objects.get(id = exerciseId)
+        found.reps = request.data['reps'] or found.reps
+        found.weight = request.data['weight'] or found.weight
+        found.sets = request.data['sets'] or found.sets
+        found.save()
+        return Response({'success': True, 'id': exerciseId})
+    else:
+        return Response({'success': False})
 
 
-@api_view(['GET', 'PUT','POST'])
+@api_view(['GET'])
 def weekdaygroup(request):
     if request.user.is_authenticated:
-            # print(request)
             user = request.user.id
-            # print(user)
-    # test = DaysOfTheWeek(mondayGroups = ['chest', 'chest'], tuesdayGroups = ['back','triceps'],
-    #     wednesdayGroups = ['traps'], thursdayGroups = ['forearms'],
-    #     fridayGroups = ['abdominals'],saturdayGroups = ['triceps'],
-    #     sundayGroups = ['biceps'])
-    # test.save()
     if request.method == 'GET':
         day = DaysOfTheWeek.objects.all().filter(user_schedule=user)
         dayData= DaysOfTheWeekSerializer(day, many=True )
         # print(dayData.data)
         return Response(dayData.data)
     elif request.method == 'POST':
-        userSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
-        # print(userSchedule)
-        daySerial = DaysOfTheWeekSerializer(userSchedule, many=False)
-        return Response(daySerial.data)
+        return
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
         pass
 
-@api_view(['GET','PUT', 'DELETE', 'POST'])
+@api_view(['POST', 'DELETE'])
 def deleteWeekdayGroup(request, day, group):
     # print(day, group)
     user = request.user.id
-    if request.method == 'PUT':
+# -----------
+# -----------Put group day
+    if request.method == 'DELETE':
         if day == 'mondayGroups':
             userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
-            print(userWorkoutSchedule.mondayGroups)
             arr = userWorkoutSchedule.mondayGroups
             work = arr.index(group)
             arr.pop(work)
             userWorkoutSchedule.mondayGroups = arr
             userWorkoutSchedule.save()
-            print(userWorkoutSchedule.mondayGroups)
             return JsonResponse({'success': True})
+
+        if day == 'tuesdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.tuesdayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.tuesdayGroups = arr
+            userWorkoutSchedule.save()
+           
+            return JsonResponse({'success': True})
+        if day == 'wednesdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.wednesdayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.wednesdayGroups = arr
+            userWorkoutSchedule.save()
+          
+            return JsonResponse({'success': True})
+        if day == 'thursdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.thursdayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.thursdayGroups = arr
+            userWorkoutSchedule.save()
+  
+            return JsonResponse({'success': True})
+        if day == 'fridayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.fridayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.fridayGroups = arr
+            userWorkoutSchedule.save()
+     
+            return JsonResponse({'success': True})
+
+        if day == 'saturdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.saturdayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.mondayGroups = arr
+            userWorkoutSchedule.save()
+           
+            return JsonResponse({'success': True})
+
+        if day == 'sundayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.sundayGroups
+            work = arr.index(group)
+            arr.pop(work)
+            userWorkoutSchedule.sundayGroups = arr
+            userWorkoutSchedule.save()
+
+            return JsonResponse({'success': True})
+# -----------
+# -----------Post group day
+    if request.method == 'POST':
+        if day == 'mondayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.mondayGroups
+            arr.append(group)
+            userWorkoutSchedule.mondayGroups = arr
+            userWorkoutSchedule.save()
+   
+            return JsonResponse({'success': True})
+        if day == 'tuesdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.tuesdayGroups
+            arr.append(group)
+            userWorkoutSchedule.tuesdayGroups = arr
+            userWorkoutSchedule.save()
+           
+            return JsonResponse({'success': True})
+        if day == 'wednesdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.wednesdayGroups
+            arr.append(group)
+            userWorkoutSchedule.wednesdayGroups = arr
+            userWorkoutSchedule.save()
+          
+            return JsonResponse({'success': True})
+        if day == 'thursdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.thursdayGroups
+            arr.append(group)
+            userWorkoutSchedule.thursdayGroups = arr
+            userWorkoutSchedule.save()
+  
+            return JsonResponse({'success': True})
+        if day == 'fridayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.fridayGroups
+            arr.append(group)
+            userWorkoutSchedule.fridayGroups = arr
+            userWorkoutSchedule.save()
+     
+            return JsonResponse({'success': True})
+
+        if day == 'saturdayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.saturdayGroups
+            arr.append(group)
+            userWorkoutSchedule.mondayGroups = arr
+            userWorkoutSchedule.save()
+           
+            return JsonResponse({'success': True})
+
+        if day == 'sundayGroups':
+            userWorkoutSchedule = DaysOfTheWeek.objects.get(user_schedule=user)
+            arr = userWorkoutSchedule.sundayGroups
+            arr.append(group)
+            userWorkoutSchedule.sundayGroups = arr
+            userWorkoutSchedule.save()
+
+            return JsonResponse({'success': True})
+
+# -----------
+# ----------- group day
+
     else:
         return Response({'worked':False})

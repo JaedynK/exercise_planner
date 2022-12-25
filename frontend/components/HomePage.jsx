@@ -4,6 +4,7 @@ import NewUser from './NewUser';
 import UserAccount from './WorkoutPlan';
 import { useState, useEffect} from 'react';
 
+
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -60,6 +61,7 @@ export default function HomePage(){
       });
       }
 
+
       useEffect(()=>{
         funQuotes()
         getDayOfExercise()
@@ -76,7 +78,7 @@ export default function HomePage(){
         
             <h1>My Personal Workout Tracker</h1>
         </div>
-
+      {workPlz}
       <div>
     { currentWorkout.length === 0 ?<h3> Rest Day </h3> :  currentWorkout && currentWorkout.map(group => {
                 return <div>

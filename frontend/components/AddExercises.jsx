@@ -21,7 +21,7 @@ export default function AddExercises(){
     const [saveWeight, setSaveWeight]= useState('')
     const [saveSets, setSaveSets]= useState('')
 
-    const [updateIt, setUpdate]= useState(null)
+    const [updateIt, setUpdate]= useState('s')
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -32,19 +32,7 @@ export default function AddExercises(){
       setUser(user1)
     }
 
-    function getAllExercise(){
-      axios.get('exercise/').then(response=>{
-        let data = response.data
-        setExercises(data)
-      })
-    }
 
-  function deleteExercise(id){
-      axios.delete('exercise/'+id+'/').then(response=>{
-        let data = response.data
-        console.log(data)
-      })
-    }
 
     const musciles = [
         {label: 'N/A', value:'' },
@@ -122,6 +110,7 @@ export default function AddExercises(){
         console.log(myResponse.data)
         if(myResponse.data['new exercise']==true){
           console.log("Input Saved")
+          setUpdate(myResponse.data)
         }
         else{
             alert("Incorrect Input")
@@ -140,7 +129,7 @@ export default function AddExercises(){
       let reps = saveReps || document.getElementById("repsInput").value
       let sets=  saveSets || document.getElementById("setsInput").value
       console.log(muscile_group1, workout_type1, weight, reps, sets)
-      let myResponse=await axios.post('exercise/',{
+      let myResponse= await axios.post('exercise/',{
           'exercise_title': exercise_title1,
           'muscile_group': muscile_group1,
           'equipment': equipment1,
@@ -152,7 +141,8 @@ export default function AddExercises(){
       })
 
       if(myResponse.data['new exercise']==true){
-        console.log("Input Saved")
+        console.log("Input Saved", myResponse.data)
+        setUpdate(myResponse.data)
       }
       else{
           console.log("Incorrect Input")
@@ -160,28 +150,42 @@ export default function AddExercises(){
       }
   }
 
+  function deleteExercise(id){
+    axios.delete('exercise/'+id+'/').then(response=>{
+      let data = response.data
+      console.log(data)
+      setUpdate(data)
+    })
+  }
+
+  const getAllExercise=async()=>{
+    let myResponse = await axios.get('exercise/').then(response=>{
+      let data = response.data
+      setExercises(data)
+    }, 1000)
+  }
   function updateExercise(id){
     axios.put('exercise/'+id+'/', {'reps': reps, 'weight': weight, 'sets': sets}).then(response=>{
       let data = response.data
       console.log(data)
+      setUpdate(data)
     })
   }
 
+  // useEffect(()=>{
+  //   getAllExercise()
+  // }, [updateIt])
 
     useEffect(()=>{
         curr_user()
-        getAllExercise()
         muscleGroups()
     }, [])
 
     useEffect(()=>{
       muscleGroups()
       getAllExercise()
-    }, [selectMuscile, selectType])
+    }, [selectMuscile, selectType, updateIt])
 
-    useEffect(()=>{
-      getAllExercise()
-    }, [updateIt])
 
 
 
@@ -217,12 +221,16 @@ return(
               <h8>{index.muscile_group}</h8></div>
             
             <br></br>
-            <input placeholder={index.weight || 'weight'} type="number" onChange={(event)=> setSaveWeight(event.target.value)} />
-            <input placeholder={index.reps ||'reps'} type="number" onChange={(event)=> setSaveReps(event.target.value)} />
-            <input placeholder={index.sets ||'sets'} type="number" onChange={(event)=> setSaveSets(event.target.value)} />
-            <button onClick={()=>{updateExercise(index.id); setUpdate(index.exercise_title)}}>save</button>
+           
+            <input placeholder={index.weight || 'weight'} type="number" onChange={(event)=> setSaveWeight(event.target.value)} /> weight
+            <br />
+           <input placeholder={index.reps ||'reps'} type="number" onChange={(event)=> setSaveReps(event.target.value)} /> Reps
+            <br />
+            <input placeholder={index.sets ||'sets'} type="number" onChange={(event)=> setSaveSets(event.target.value)} /> Sets
+            
             </text>
-            <button onClick={()=>{deleteExercise(index.id); setUpdate(index.muscile_group) }}>delete</button>
+            <Button variant="outline-success" onClick={()=>{updateExercise(index.id)}}>save</Button>
+            <Button variant="outline-danger" onClick={()=>{deleteExercise(index.id)}}>delete</Button>
             </ListGroup.Item>
           </ListGroup>:<></>}
           </div>
@@ -232,7 +240,7 @@ return(
       <h2>Add New Exercise</h2>
       <hr></hr>
       
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="outline-primary" onClick={handleShow}>
        Add Exercise Manually 
       </Button>
 
@@ -250,7 +258,7 @@ return(
               <input placeholder={'reps'} type="number" id='repsInput' onChange={(event)=> setSaveReps(event.target.value)} />
               <input placeholder={'sets'} type="number" id='setsInput' onChange={(event)=> setSaveSets(event.target.value)}/>
             </div>
-          <button className="add_btn" onClick={() => {addExercise(exercise);  setUpdate(exercise.name)}}>Save</button>
+          <Button variant="outline-success" className="add_btn" onClick={() => {addExercise(exercise)}}>Save</Button>
           </ListGroup.Item>
           </ListGroup>
           :<></>}</div>
@@ -269,7 +277,7 @@ return(
             <center>
             <form onSubmit={addExercise}>
               <div>
-                  <input id='exerciseName' placeholder='Exercise Name' />
+               <input id='exerciseName' placeholder='Exercise Name' />
               </div>
               <div>
                   <input id='equipment' placeholder='Equipment' />
@@ -296,7 +304,7 @@ return(
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={manualAddExercise}>
+              <Button variant="outline-success" onClick={manualAddExercise}>
                 Save Exercise
               </Button>
             </Modal.Footer>

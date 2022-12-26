@@ -89,6 +89,7 @@ export default function WorkoutPlan(){
         axios.delete('exercise/'+id+'/').then(response=>{
           let data = response.data
           console.log(data)
+          setTheDeleteEx(data)
         })
       }
 
@@ -125,6 +126,7 @@ export default function WorkoutPlan(){
     axios.delete('weekday/'+day+'/muscile/'+group+'/').then(response=>{
       let data = response.data
       console.log(data)
+      setTheDeleteEx(data)
     }).then(
     // window.location.reload()
     )
@@ -221,7 +223,7 @@ export default function WorkoutPlan(){
           <div>
             <text>{index.exercise_title} 
           <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-            {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+            {deleteExercise(index.id)}}>x</Button>
           <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
           <hr></hr>
           </div>
@@ -271,7 +273,7 @@ export default function WorkoutPlan(){
                      <div>
                      <text>{index.exercise_title} 
                    <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                    {deleteExercise(index.id)}}>x</Button>
                    <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
                    <hr></hr>
                    </div>
@@ -322,7 +324,7 @@ export default function WorkoutPlan(){
                      <div>
                      <text>{index.exercise_title} 
                    <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                    {deleteExercise(index.id)}}>x</Button>
                    <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
                    <hr></hr>
                    </div>
@@ -374,7 +376,7 @@ export default function WorkoutPlan(){
                     <div>
                     <text>{index.exercise_title} 
                   <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                   {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                   {deleteExercise(index.id)}}>x</Button>
                   <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
                   <hr></hr>
                   </div>
@@ -426,7 +428,7 @@ export default function WorkoutPlan(){
                     <div>
                     <text>{index.exercise_title} 
                     <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                     {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                     {deleteExercise(index.id)}}>x</Button>
                     <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
                     <hr></hr>
                     </div>
@@ -478,7 +480,7 @@ export default function WorkoutPlan(){
                     <div>
                     <text>{index.exercise_title} 
                     <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                    {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
+                    {deleteExercise(index.id)}}>x</Button>
                     <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
                     <hr></hr>
                     </div>
@@ -527,7 +529,7 @@ export default function WorkoutPlan(){
                      {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
                      <div><text>{index.exercise_title}</text>
                      <button onClick={()=> 
-                     {deleteExercise(index.id); setTheDeleteEx(index.id)}}>delete</button></div> 
+                     {deleteExercise(index.id)}}>delete</button></div> 
                      : <></>}
                       </div>
                     })}

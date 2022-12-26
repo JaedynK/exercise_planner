@@ -3,12 +3,13 @@ import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom'
 import NewUser from './NewUser';
 import UserAccount from './WorkoutPlan';
 import { useState, useEffect} from 'react';
+import Carousel from 'react-bootstrap/Carousel';
+
+
 
 
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 
 export default function HomePage(){
 
@@ -17,8 +18,15 @@ export default function HomePage(){
     const [currentWorkout, setCurretWorkout]= useState([])
     const [theDelete, setTheDelete]= useState('')
     const [theDeleteEx, setTheDeleteEx]= useState(0)
+    const [workoutPlan, setWorkoutPlan]= useState([])
 
-
+ const [monday, setMonday] = useState([])
+  const [tuesday, setTuesday] = useState([])
+  const [wednesday, setWednesday] = useState([])
+  const [thursday, setThursday] = useState([])
+  const [friday, setFriday] = useState([])
+  const [saturday, setSaturday] = useState([])
+  const [sunday, setSunday] = useState([])
 
     function getDayOfExercise(){
       axios.get('weekday/').then(response=>{
@@ -27,13 +35,13 @@ export default function HomePage(){
         if(data.length === 0 ){
           alert("No Exercise Plan made")
         }else{
-        setMonday(data[0].mondayGroups)
-        setTuesday(data[0].tuesdayGroups)
-        setWednesday(data[0].wednesdayGroups)
-        setThursday(data[0].thursdayGroups)
-        setFriday(data[0].fridayGroups)
-        setSaturday(data[0].saturdayGroups)
-        setSunday(data[0].sundayGroups)
+          setMonday(data[0].mondayGroups)
+          setTuesday(data[0].tuesdayGroups)
+          setWednesday(data[0].wednesdayGroups)
+          setThursday(data[0].thursdayGroups)
+          setFriday(data[0].fridayGroups)
+          setSaturday(data[0].saturdayGroups)
+          setSunday(data[0].sundayGroups)
         }
       })
     }
@@ -61,6 +69,7 @@ export default function HomePage(){
       });
       }
 
+ 
 
       useEffect(()=>{
         funQuotes()
@@ -78,41 +87,78 @@ export default function HomePage(){
         
             <h1>My Personal Workout Tracker</h1>
         </div>
-      {workPlz}
-      <div>
-    { currentWorkout.length === 0 ?<h3> Rest Day </h3> :  currentWorkout && currentWorkout.map(group => {
-                return <div>
-                <ul>
-                  <li>
-                  {theDelete === group ? 
-                  <h3 style={{ color: 'red', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{group}</h3> 
-                  : <div className='groupNameDiv'>
-                    <text style={{fontWeight: 'bold', fontSize: '1.5rem'}}>{group}</text> 
-                    <Button variant="outline-danger" size="sm" style={{marginLeft:'1rem'}} onClick={(event) => setTheDelete(group) }>delete</Button>
-                    </div>}
-        
-                  {exercises && exercises.map((index, i) => { return <div> {group === index.muscile_group ? 
-                  <div>
-                  <text>{index.exercise_title} 
-                <Button style={{marginLeft:'1rem'}} variant="outline-danger" size="sm" onClick={()=>
-                  {deleteExercise(index.id); setTheDeleteEx(index.id)}}>x</Button>
-                <br></br> ({index.weight}lbs| {index.reps} Reps| {index.sets} Sets)</text>
-                <hr></hr>
-                </div>
-                  : <></>}
-                    </div>
-                  })}
-        
-                  </li>
-                </ul>
-                </div>
-                })}
-      </div>
       
-
     <div className="home_quote square rounded border border-5">
         <h4>{quote}</h4>
     </div>
+    
+ {/* <div><strong>Monday:</strong>
+   { monday && monday.map(group=> {return<div>{group}</div>})}
+   </div>
+          {tuesday && tuesday.map(group=> {return<div><strong>Tuesday:</strong> {group}</div>})}
+          {wednesday && wednesday.map(group=> {return<div><strong>Wednesday:</strong> {group}</div>})}
+          {thursday && thursday.map(group=> {return<div><strong>thursday:</strong> {group}</div>})}
+          {friday && friday.map(group=> {return<div><strong>Friday:</strong> {group}</div>})}
+          {saturday && saturday.map(group=> {return<div><strong>Saturday:</strong> {group}</div>})}
+          {sunday && sunday.map(group=> {return<div><strong>Sunday:</strong> {group}</div>})} */}
+
+      <div style={{ display: 'block', width: 700, padding: 30 }}>
+      <h4>Workout Plan</h4>
+      <Carousel fade>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          style={{'height':"300px", 'background':'none' }} 
+        />
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          style={{'height':"300px", 'background':'none' }} 
+        />
+
+        <Carousel.Caption>
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          style={{'height':"300px", 'background':'none' }} 
+        />
+
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+     
+    </div>
+
+    {/* {workoutPlan && workoutPlan.map(day=> {return <div>
+      {day.mondayGroups.map(test=> test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.tuesdayGroups.map(test=> test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.wednesGroups.map(test=> test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.thursdayGroups.map(test=>test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.firdayGroups.map(test=>test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.saturdayGroups.map(test=> test ? <div></div>:<div>{test}</div>)}
+      <br/>
+      {day.sundayGroups.map(test=> test ? <div></div>:<div>{test}</div>)}
+      </div>})} */}
     </div>
     )
 }
+// .map(test=><div>{test}</div>)

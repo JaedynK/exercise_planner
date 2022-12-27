@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Button from 'react-bootstrap/Button';
 
 export default function NewUser(){
 
@@ -43,7 +44,7 @@ export default function NewUser(){
         <input className='signInput' id='signUpPassword' placeholder='password' />
         <input className='signInput' id='signUpPassword2' placeholder='re-enter password' />
         <br></br>
-        <button onClick={signUp}>Sign Up</button>
+        <Button style={{margin:'.35rem'}} size='sm' variant="outline-primary" onClick={signUp}>Sign Up</Button>
         </form>
         </div>
     </div>

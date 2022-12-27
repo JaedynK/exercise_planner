@@ -127,8 +127,6 @@ def saveWorkout(request):
         elif request.method == 'GET':
             exercise = PassWorkouts.objects.all()
             exerciseData=PassWorkoutsSerializer(exercise, many=True )
-            # print(exerciseData.data)
-            # print(exercise)
             return Response(exerciseData.data)
 
     except Exception as e:
@@ -172,7 +170,7 @@ def getExercise(request, exerciseId):
         return Response({'success': False})
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def weekdaygroup(request):
     if request.user.is_authenticated:
             user = request.user.id
@@ -182,7 +180,19 @@ def weekdaygroup(request):
         # print(dayData.data)
         return Response(dayData.data)
     elif request.method == 'POST':
-        return
+        mondaygroups= request.data['mondaygroups']
+        tuesdaygroups = request.data['tuesdaygroups']
+        wednesdaygroups= request.data['wednesdaygroups']
+        thursdaygroups = request.data['thursdaygroups']
+        fridaygroups= request.data['fridaygroups']
+        saturdaygroups = request.data['saturdaygroups']
+        sundaygroups= request.data['sundaygroups']
+        user_schedule = AppUser.objects.get(id=user)
+        saveExercise = DaysOfTheWeek(mondayGroups=mondaygroups, tuesdayGroups=tuesdaygroups,
+            wednesdayGroups=wednesdaygroups, thursdayGroups=thursdaygroups, fridayGroups=fridaygroups,
+            saturdayGroups=saturdaygroups, sundayGroups=sundaygroups, user_schedule=user_schedule)
+        saveExercise.save()
+        return JsonResponse({'new exercise': True})
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':

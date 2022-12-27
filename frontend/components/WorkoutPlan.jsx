@@ -69,7 +69,7 @@ export default function WorkoutPlan(){
     const handleClose6 = () => setShow6(false);
     const handleShow6 = () => setShow6(true);
 
-  
+  const [allWorkouts, setAllWorkouts] = useState([])
   const [monday, setMonday] = useState([])
   const [tuesday, setTuesday] = useState([])
   const [wednesday, setWednesday] = useState([])
@@ -110,6 +110,7 @@ export default function WorkoutPlan(){
       if(data.length === 0 ){
         alert("No Exercise Plan made")
       }else{
+      setAllWorkouts(data)
       setMonday(data[0].mondayGroups)
       setTuesday(data[0].tuesdayGroups)
       setWednesday(data[0].wednesdayGroups)
@@ -142,10 +143,30 @@ export default function WorkoutPlan(){
       window.location.reload()
     )
   }
+  function newWorkoutSchedule(){
+    let mondaygroups= ['chest']
+    let tuesdaygroups = ['lats']
+    let wednesdaygroups= ['claves']
+    let thursdaygroups = ['hamstings']
+    let fridaygroups= ['gluts']
+    let saturdaygroups = ['chest']
+    let sundaygroups= ['chest']
+    axios.post('weekday/',{
+      'mondaygroups': mondaygroups,
+      'tuesdaygroups' :tuesdaygroups,
+      'wednesdaygroups': wednesdaygroups,
+      'thursdaygroups': thursdaygroups,
+      'fridaygroups': fridaygroups,
+      'saturdaygroups': saturdaygroups,
+      'sundaygroups': sundaygroups,
+    }).then(response=>{
+      let data = response.data
+      console.log(data)
+    })
+  }
     
       useEffect(()=>{
         getDayOfExercise()
-
       },[])
 
       useEffect(()=>{
@@ -156,6 +177,7 @@ export default function WorkoutPlan(){
     return(
        <div className='workouts_page'>
 {/* modal clickers */}
+{allWorkouts.length == 0 ? <Button variant="outline-primary" onClick={newWorkoutSchedule}>Make New Schedule</Button>:
 <Container>
   <Col>
 
@@ -202,6 +224,7 @@ export default function WorkoutPlan(){
       </Row>
   </Col>
 </Container>
+}
 {/* ----------------------Monday Modal---------------------------- */}
 <Modal show={show} onHide={handleClose}>
   <Modal.Header closeButton>
@@ -290,7 +313,7 @@ export default function WorkoutPlan(){
                   </div>
                 </Modal.Body>
               <Modal.Footer>
-                <Button variant="outline-secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose1}>
                   Close
                 </Button>
           
@@ -341,7 +364,7 @@ export default function WorkoutPlan(){
                   </div>
                 </Modal.Body>
               <Modal.Footer>
-                <Button variant="outline-secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose2}>
                   Close
                 </Button>
           
@@ -393,7 +416,7 @@ export default function WorkoutPlan(){
                 </div>
               </Modal.Body>
             <Modal.Footer>
-              <Button variant="outline-secondary" onClick={handleClose}>
+              <Button variant="outline-secondary" onClick={handleClose3}>
                 Close
               </Button>
         
@@ -445,7 +468,7 @@ export default function WorkoutPlan(){
                  </div>
                </Modal.Body>
              <Modal.Footer>
-               <Button variant="outline-secondary" onClick={handleClose}>
+               <Button variant="outline-secondary" onClick={handleClose4}>
                  Close
                </Button>
          
@@ -496,7 +519,7 @@ export default function WorkoutPlan(){
                 </div>
               </Modal.Body>
             <Modal.Footer>
-              <Button variant="outline-secondary" onClick={handleClose}>
+              <Button variant="outline-secondary" onClick={handleClose5}>
                 Close
               </Button>
         
@@ -543,7 +566,7 @@ export default function WorkoutPlan(){
                  </div>
                </Modal.Body>
              <Modal.Footer>
-               <Button variant="outline-secondary" onClick={handleClose}>
+               <Button variant="outline-secondary" onClick={handleClose6}>
                  Close
                </Button>
          

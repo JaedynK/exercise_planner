@@ -59,6 +59,8 @@ export default function WorkoutHistory(){
         )
       }
 
+
+
       useEffect(()=>{
         curr_user()
         getWorkout()

@@ -40,7 +40,7 @@ function App() {
   const curr_user=async()=>{
     let myResponse=await axios.get('current_user/')
     let user1= myResponse.data
-    console.log(user1)
+    // console.log(user1)
     setUser(user1)
   }
 

@@ -22,7 +22,8 @@ body{
 }
 
 .App{
-    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background-image: url('/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.b0033da9.jpg');
+    background-color: #979797;
     background-repeat: no-repeat;
     background-size:cover;
     height:100vh;
@@ -73,7 +74,7 @@ body{
 }
 
 .addExercise_container{
-    background-image: url(/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.jpg);
+    background-image:url('/images/jeremy-lapak-CVvFVQ_-oUg-unsplash.b0033da9.jpg');
     background-repeat: no-repeat;
     background-size:cover;
     padding: 1rem;
@@ -111,4 +112,11 @@ body{
     background-repeat: no-repeat;
     background-size:cover;
     padding: 1rem;
+}
+
+
+.home_carousel{
+    float: none;
+   margin: 0 auto;
+    width: fit-content;
 }

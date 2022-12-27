@@ -19,7 +19,7 @@ import WorkoutHistory from './WorkoutHistory';
 
 export default function MyNavbar({user}) {
 
-    console.log(user)
+    // console.log(user)
 
     const signOut=async()=>{
         let myResponse=await axios.post('signOut/')

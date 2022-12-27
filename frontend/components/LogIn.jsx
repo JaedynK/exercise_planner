@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Button from 'react-bootstrap/Button';
 
 export default function User(){
     const signIn=async()=>{
@@ -27,7 +28,7 @@ export default function User(){
                 <form onSubmit={signIn}>
                     <input id='signInUserName' placeholder='username' />
                     <input id='signInPassword' placeholder='password' type="password"/>
-                    <button onClick={signIn}>Sign In</button>
+                    <Button style={{margin:'.35rem'}} size='sm' variant="outline-primary" onClick={signIn}>Sign In</Button>
                 </form>
             </div>
         </div>

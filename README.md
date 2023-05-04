@@ -1,5 +1,5 @@
 # Exercise_planner
-See some workouts that you can do and A calendar to track workout days.
+See some workouts that you can do and to track workout days.
 
 HOME PAGE
 ![Workout-Tracker home](https://user-images.githubusercontent.com/106449921/235540287-8e7d3e70-f86b-4cd9-88d2-6782378cfd39.png)
